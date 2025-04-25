@@ -107,7 +107,7 @@ if uploaded_file is not None:
                 ).reset_index()
 
                 # Reorder columns
-                columns = ['serial_nr', 'First Effective Date', 'Active Months', 'Count', 'Device History']
+                columns = ['serial_nr', 'First Effective Date', 'Active Months', 'Count', 'Device_History']
                 serial_history_pivoted = serial_history_pivoted[columns]
 
                 # Display the pivoted DataFrame
@@ -118,3 +118,4 @@ if uploaded_file is not None:
 
     except Exception as e:
         st.error(f"Error reading the file: {e}")
+
