@@ -68,8 +68,6 @@ if uploaded_file is not None:
                 # Show final result
                 st.dataframe(grouped.sort_values(by=['Transporter', 'Serial Number']))
 
-            else:
-                st.info("Please select one or more transporter to filter the data.")
         else:
             st.warning("The uploaded file does not contain a 'description' column.")
 
