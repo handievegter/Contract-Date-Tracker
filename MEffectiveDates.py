@@ -2,12 +2,12 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
-st.title("I-CAB M Contract Info")
-
 st.set_page_config(
-   page_title="Easify my Life! ",
+   page_title="",
    page_icon="🫃🏽"
 )
+
+st.title("I-CAB M Contract Info")
 
 uploaded_file = st.file_uploader("Upload an Excel file", type=["xlsx", "xls"])
 
