@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
-st.title("Excel File Uploader & Serial Activity Summary")
+st.title("I-CAB M Contract Info")
 
 uploaded_file = st.file_uploader("Upload an Excel file", type=["xlsx", "xls"])
 
@@ -33,7 +33,7 @@ if uploaded_file is not None:
             )
 
             if selected_descriptions:
-                st.subheader("Combined Summary by Serial Number and Description")
+                st.subheader("Grouped by Transporter")
                 today = pd.to_datetime(datetime.today().date())
 
                 # Filter dataframe based on descriptions
@@ -46,7 +46,7 @@ if uploaded_file is not None:
                     .min()
                     .reset_index()
                     .rename(columns={
-                        'description': 'Description',
+                        'description': 'Transporter',
                         'serial_nr': 'Serial Number',
                         'effective_date': 'First Effective Date'
                     })
@@ -61,10 +61,10 @@ if uploaded_file is not None:
                 )
 
                 # Show final result
-                st.dataframe(grouped.sort_values(by=['Description', 'Serial Number']))
+                st.dataframe(grouped.sort_values(by=['Transporter', 'Serial Number']))
 
             else:
-                st.info("Please select one or more descriptions to filter the data.")
+                st.info("Please select one or more transporter to filter the data.")
         else:
             st.warning("The uploaded file does not contain a 'description' column.")
 
@@ -109,7 +109,7 @@ if uploaded_file is not None:
                 )
 
                 # Reorder columns
-                columns = ['serial_nr', 'First Effective Date', 'Active Months', 'Count', 'Device_History']
+                columns = ['serial_nr', 'First Effective Date', 'Active Months', 'Count', 'Device History']
                 serial_history_pivoted = serial_history_pivoted[columns]
 
                 # Display the pivoted DataFrame
