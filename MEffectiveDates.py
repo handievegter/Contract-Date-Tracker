@@ -107,7 +107,7 @@ if uploaded_file is not None:
                 ).reset_index()
 
                 # Reorder columns
-                columns = ['serial_nr', 'First Effective Date', 'Active Months', 'Count', 'Device_History']
+                columns = ['serial_nr', 'First_Effective_Date', 'Active_Months', 'Count', 'Device_History']
                 serial_history_pivoted = serial_history_pivoted[columns]
 
                 # Display the pivoted DataFrame
