@@ -4,7 +4,7 @@ from datetime import datetime
 
 st.set_page_config(
    page_title=" ",
-   page_icon="🫃🏽"
+   page_icon="🖕"
 )
 
 st.title("I-CAB M Contract Info")
@@ -119,7 +119,7 @@ if uploaded_file is not None:
                 st.dataframe(serial_history_pivoted)
 
             else:
-                st.warning("No data found for the specified serial numbers.")
+                st.warning("No data found for the specified serial number(s).")
 
     except Exception as e:
         st.error(f"Error reading the file: {e}")
