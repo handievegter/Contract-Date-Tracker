@@ -28,11 +28,11 @@ if uploaded_file is not None:
             descriptions = df['description'].dropna().unique()
 
             # Add filter input for descriptions
-            filter_text = st.text_input("Type to filter descriptions:")
+            filter_text = st.text_input("Type to filter transporters:")
             filtered_options = [d for d in sorted(descriptions) if filter_text.lower() in d.lower()]
 
             selected_descriptions = st.multiselect(
-                "Select one or more descriptions:",
+                "Select one or more transporters:",
                 options=filtered_options,
                 key="description_selector"
             )
