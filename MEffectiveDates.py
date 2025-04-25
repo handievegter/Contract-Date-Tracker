@@ -4,7 +4,7 @@ from datetime import datetime
 
 st.set_page_config(
    page_title=" ",
-   page_icon="🖕"
+   page_icon="🫃🏽"
 )
 
 st.title("I-CAB M Contract Info")
@@ -92,24 +92,19 @@ if uploaded_file is not None:
                     serial_history_sorted['effective_date'].dt.strftime('%Y-%m-%d') + ' - ' + serial_history_sorted['description']
                 )
 
+                # Add the "First Effective Date" and "Active Months" columns before groupby
+                serial_history_sorted['First Effective Date'] = serial_history_sorted.groupby('serial_nr')['effective_date'].transform('min')
+                serial_history_sorted['Active Months'] = serial_history_sorted['First Effective Date'].apply(
+                    lambda date: (today.year - date.year) * 12 + (today.month - date.month)
+                )
+
                 # Group by 'serial_nr' and concatenate all occurrences into a single "Device History" column
                 serial_history_pivoted = serial_history_sorted.groupby('serial_nr').agg(
-                    Device_History=('Effective Date and Description', lambda x: ' | '.join(x))
+                    Device_History=('Effective Date and Description', lambda x: ' | '.join(x)),
+                    First_Effective_Date=('First Effective Date', 'min'),
+                    Active_Months=('Active Months', 'min'),
+                    Count=('serial_nr', 'size')
                 ).reset_index()
-
-                # Add the "First Effective Date" and "Active Months" columns
-                serial_history_pivoted['First Effective Date'] = serial_history_pivoted['serial_nr'].apply(
-                    lambda sn: serial_history_sorted[serial_history_sorted['serial_nr'] == sn]['effective_date'].min().strftime('%Y-%m-%d')
-                )
-
-                serial_history_pivoted['Active Months'] = serial_history_pivoted['First Effective Date'].apply(
-                    lambda date: (today.year - int(date[:4])) * 12 + (today.month - int(date[5:7]))
-                )
-
-                # Add "Count" column (count of occurrences of each serial number)
-                serial_history_pivoted['Count'] = serial_history_pivoted['serial_nr'].apply(
-                    lambda sn: serial_history_sorted[serial_history_sorted['serial_nr'] == sn].shape[0]
-                )
 
                 # Reorder columns
                 columns = ['serial_nr', 'First Effective Date', 'Active Months', 'Count', 'Device History']
@@ -119,7 +114,7 @@ if uploaded_file is not None:
                 st.dataframe(serial_history_pivoted)
 
             else:
-                st.warning("No data found for the specified serial number(s).")
+                st.warning("No data found for the specified serial numbers.")
 
     except Exception as e:
         st.error(f"Error reading the file: {e}")
