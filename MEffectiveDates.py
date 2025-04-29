@@ -3,8 +3,8 @@ import pandas as pd
 from datetime import datetime
 
 st.set_page_config(
-   page_title=" ",
-   page_icon="🫃🏽"
+   page_title=" Contract Info ",
+   page_icon="🩻"
 )
 
 st.title("I-CAB M Contract Info")
@@ -67,6 +67,25 @@ if uploaded_file is not None:
 
                 # Show final result
                 st.dataframe(grouped.sort_values(by=['Transporter', 'Serial Number']))
+
+                # --- Summary Table: Contract Age Buckets ---
+                # Convert Active Months to Years
+                grouped['Contract Age (Years)'] = grouped['Active Months'] / 12
+
+                # Define bins and labels
+                bins = [0, 1, 2, 3, float('inf')]
+                labels = ['0-1', '1-2', '2-3', '3+']
+
+                # Categorize into buckets
+                grouped['Contract Age Bucket'] = pd.cut(grouped['Contract Age (Years)'], bins=bins, labels=labels, right=False)
+
+                # Count how many fall into each bucket
+                summary = grouped['Contract Age Bucket'].value_counts().reindex(labels, fill_value=0).reset_index()
+                summary.columns = ['Contract Age (years)', 'Count']
+
+                # Display summary table
+                st.subheader("Summary of Contract Ages")
+                st.table(summary)
 
         else:
             st.warning("The uploaded file does not contain a 'description' column.")
